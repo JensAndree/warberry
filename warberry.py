@@ -7,6 +7,9 @@ it under the terms of the GNU General Public License as published by
 the Free Software Foundation, either version 3 of the License, or
 (at your option) any later version.
 
+Modifications to WarBerry tool by Jens Andrée
+Removal of Bluetooth
+
 This program is distributed in the hope that it will be useful,
 but WITHOUT ANY WARRANTY; without even the implied warranty of
 MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
@@ -45,7 +48,7 @@ from urllib import urlopen
 import ftplib
 import time
 from netaddr import *
-from bluetooth import *
+#from bluetooth import *
 #External modules
 from info_banners import *
 from network_scanners import *
@@ -158,9 +161,9 @@ v2.0                              @sec_groundzero
                     snmp_enum()
                     with open('../Results/running_status', 'a') as status:
                         status.write("Completed SNMP Enumeration\n")
-            bluetooth_scan()
-            with open('../Results/running_status', 'a') as status:
-                status.write("Completed bluetooth scan\n")
+#            bluetooth_scan()
+#            with open('../Results/running_status', 'a') as status:
+#                status.write("Completed bluetooth scan\n")
             wifi_scan()
             with open('../Results/running_status', 'a') as status:
                 status.write("Completed wifi networks scan\n")
@@ -362,35 +365,35 @@ def wifi_scan():
                 return
 
 
-def bluetooth_scan():
-
-    subprocess.call("sudo cat /proc/cpuinfo | grep Revision | awk {'print $3'} > ../Results/model", shell=True)
-
-    with open('../Results/model', 'r') as pi_model:
-        for model in pi_model:
-            if model.strip() == "a02082":
-                print " "
-                print bcolors.OKGREEN + "      [ BLUETOOTH ENUMERATION MODULE ]\n" + bcolors.ENDC
-
-                def discover():
-                    blues = discover_devices()
-                    for device in blues:
-                        name = str(lookup_name(device))
-                        with open('../Results/blues','a') as bluesfile:
-                            bluesfile.write(str(name) + " " + str(device)+ "\n")
-
-                        print bcolors.OKGREEN + "[+]" + bcolors.ENDC + " Found Bluetooth Device: " + str(name)
-                        print bcolors.OKGREEN + "[+]" + bcolors.ENDC + " MAC address: " + str(device)
-
-                for i in range(10):
-                    discover()
-            else:
-                return
-    if os.path.isfile('../Results/blues'):
-        if os.stat('../Results/blues').st_size != 0:
-            print bcolors.TITLE + "[+] Done! Results saved in /Results/blues" + bcolors.ENDC
-    else:
-        print bcolors.WARNING + "[-] No Bluetooth Devices Captured" + bcolors.ENDC
+#def bluetooth_scan():
+#
+#    subprocess.call("sudo cat /proc/cpuinfo | grep Revision | awk {'print $3'} > ../Results/model", shell=True)
+#
+#    with open('../Results/model', 'r') as pi_model:
+#        for model in pi_model:
+#            if model.strip() == "a02082":
+#                print " "
+#                print bcolors.OKGREEN + "      [ BLUETOOTH ENUMERATION MODULE ]\n" + bcolors.ENDC
+#
+#                def discover():
+#                    blues = discover_devices()
+#                    for device in blues:
+#                        name = str(lookup_name(device))
+#                        with open('../Results/blues','a') as bluesfile:
+#                            bluesfile.write(str(name) + " " + str(device)+ "\n")
+#
+#                        print bcolors.OKGREEN + "[+]" + bcolors.ENDC + " Found Bluetooth Device: " + str(name)
+#                        print bcolors.OKGREEN + "[+]" + bcolors.ENDC + " MAC address: " + str(device)
+#
+#                for i in range(10):
+#                    discover()
+#            else:
+#                return
+#    if os.path.isfile('../Results/blues'):
+#        if os.stat('../Results/blues').st_size != 0:
+#            print bcolors.TITLE + "[+] Done! Results saved in /Results/blues" + bcolors.ENDC
+#    else:
+#        print bcolors.WARNING + "[-] No Bluetooth Devices Captured" + bcolors.ENDC
     
 
 def nbtscan(CIDR):
